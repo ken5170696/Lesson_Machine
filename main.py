@@ -1,14 +1,16 @@
 import logging
 import threading
 import datetime
+
 from splinter import Browser
 import time
+
 import logging
 
 # variable
 # Acount info
-Username = "B11015030"
-Password = "Jovi920204@gmail.com"
+Username = "YOUR_STUDENT_NUMBER"
+Password = "YOUR_PASSWORD"
 # Website driver address
 driverAddress = 'C:\Program Files\Google\Chrome\Application\chromedriver.exe'
 # url
@@ -18,9 +20,8 @@ MAIN_PAGE = 'https://courseselection.ntust.edu.tw/First/A06/A06'
 TIMEOUT = 30
 # Lesson Code
 lessonCode = [
-    'FE1781701',
-    'FE1935701',
-    'TCG084301'
+    'LESSON_CODE_1_HERE',
+    'LESSON_CODE_2_HERE'
 ]
 listLength = len(lessonCode)
 listIndex = 0
@@ -35,29 +36,20 @@ def init():
         datefmt='%Y-%m-%d %H:%M',
         handlers=[logging.FileHandler('./log/output.log', 'w', 'utf-8'), ]
     )
-    logging.debug("Initializing")
     global browser
     browser.visit(INDEX_PAGE)
-    
 def login():
-    logging.debug("Try to login the account")
     global browser
     browser.fill('UserName',Username)
     time.sleep(1)
     browser.fill('Password',Password)
     time.sleep(1)
-    btnLogIn = browser.find_by_name('btnLogIn')
-    while btnLogIn == None:
-        btnLogIn = browser.find_by_name('btnLogIn')
-    btnLogIn.click()
+    browser.find_by_name('btnLogIn').click()
     time.sleep(1) 
-    
 def enterMainPage():
-    logging.debug("Enter Main Page")
     global browser
     browser.visit(MAIN_PAGE)
 def takeLesson():
-    logging.debug("Enter Main Page")
     global browser, listIndex
     browser.fill('CourseText',lessonCode[listIndex])
     browser.find_by_id('SingleAdd').click()
@@ -116,5 +108,4 @@ while True:
             print("加選錯誤")
     else:
         browser.visit(INDEX_PAGE)
-
 print("End")
