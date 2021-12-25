@@ -1,16 +1,14 @@
 import logging
 import threading
 import datetime
-
 from splinter import Browser
 import time
-
 import logging
 
 # variable
 # Acount info
-Username = "B11015044"
-Password = "Ken+20150223-ntust"
+Username = " "
+Password = " "
 # Website driver address
 driverAddress = 'C:\Program Files\Google\Chrome\Application\chromedriver.exe'
 # url
@@ -19,9 +17,9 @@ INDEX_PAGE = 'https://courseselection.ntust.edu.tw/'
 MAIN_PAGE = 'https://courseselection.ntust.edu.tw/First/A06/A06'
 # Lesson Code
 lessonCode = [
-    'FE1471702',
-    'FE1851701',
-    'FE1935701'
+    ' ',
+    ' ',
+    ' '
 ]
 listLength = len(lessonCode)
 listIndex = 0
@@ -55,6 +53,10 @@ def takeLesson():
     browser.find_by_id('SingleAdd').click()
     alert = browser.get_alert()
     while alert == None:
+        if currentPage == LOGIN_PAGE:
+            login()
+        if currentPage == INDEX_PAGE:
+            enterMainPage()
         alert = browser.get_alert()
         
     str = '\" %s \" Reply: %s' %(lessonCode[listIndex],alert.text)
