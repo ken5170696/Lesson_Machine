@@ -52,15 +52,32 @@ def takeLesson():
     global browser, listIndex
     browser.fill('CourseText',lessonCode[listIndex])
     browser.find_by_id('SingleAdd').click()
+    now = time.time()
     alert = browser.get_alert()
+    
     while alert == None:
+        currentPage = browser.url
+        if currentPage == LOGIN_PAGE:
+            login()
+            break
+        if currentPage == INDEX_PAGE:
+            enterMainPage()
+            break
+        if time.time()-30>now:
+            browser.reload()
+            break
         alert = browser.get_alert()
         
-    str = '\" %s \" Reply: %s' %(lessonCode[listIndex],alert.text)
+    if alert!=None:
+        alert_text = alert.text
+        alert.accept()
+    else:
+        alert_text = "錯誤"
+
+    str = '\" %s \" Reply: %s' %(lessonCode[listIndex],alert_text)
     print(str)
     logging.info(str)
-    
-    alert.accept()
+
     listIndex += 1
     if listIndex == listLength:
         listIndex = 0
@@ -69,10 +86,19 @@ init()
 while True:
     currentPage = browser.url
     if currentPage == LOGIN_PAGE:
-        login()
+        try:
+            login()
+        except:
+            print("登入錯誤")         
     if currentPage == INDEX_PAGE:
-        enterMainPage()
+        try:
+            enterMainPage()
+        except:
+            print("跳轉錯誤")
     if currentPage == MAIN_PAGE:
-        takeLesson()
-
+        try:
+            takeLesson()
+        except:
+            print("加選錯誤")
+    time.sleep(1)
 print("End")
