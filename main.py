@@ -111,4 +111,5 @@ while True:
             print("加選錯誤")
     else:
         browser.visit(INDEX_PAGE)
+
 print("End")
