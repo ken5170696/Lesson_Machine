@@ -15,6 +15,7 @@ driverAddress = 'C:\Program Files\Google\Chrome\Application\chromedriver.exe'
 LOGIN_PAGE = 'https://stuinfosys.ntust.edu.tw/NTUSTSSOServ/SSO/Login/CourseSelection'
 INDEX_PAGE = 'https://courseselection.ntust.edu.tw/'
 MAIN_PAGE = 'https://courseselection.ntust.edu.tw/First/A06/A06'
+TIMEOUT = 30
 # Lesson Code
 lessonCode = [
     'FE1471702',
@@ -60,19 +61,32 @@ def takeLesson():
     global browser, listIndex
     browser.fill('CourseText',lessonCode[listIndex])
     browser.find_by_id('SingleAdd').click()
+    now = time.time()
     alert = browser.get_alert()
+    
     while alert == None:
+        currentPage = browser.url
         if currentPage == LOGIN_PAGE:
             login()
+            break
         if currentPage == INDEX_PAGE:
             enterMainPage()
+            break
+        if time.time()-now>TIMEOUT:
+            browser.reload()
+            break
         alert = browser.get_alert()
         
-    str = '\" %s \" Reply: %s' %(lessonCode[listIndex],alert.text)
+    if alert!=None:
+        alert_text = alert.text
+        alert.accept()
+    else:
+        alert_text = "錯誤"
+
+    str = '\" %s \" Reply: %s' %(lessonCode[listIndex],alert_text)
     print(str)
     logging.info(str)
-    
-    alert.accept()
+
     listIndex += 1
     if listIndex == listLength:
         listIndex = 0
@@ -81,12 +95,20 @@ init()
 while True:
     currentPage = browser.url
     if currentPage == LOGIN_PAGE:
-        login()
+        try:
+            login()
+        except:
+            print("登入錯誤")         
     elif currentPage == INDEX_PAGE:
-        enterMainPage()
+        try:
+            enterMainPage()
+        except:
+            print("跳轉錯誤")
     elif currentPage == MAIN_PAGE:
-        takeLesson()
+        try:
+            takeLesson()
+        except:
+            print("加選錯誤")
     else:
-        logging.debug("Page Not Invovled")
-
+        browser.visit(INDEX_PAGE)
 print("End")
