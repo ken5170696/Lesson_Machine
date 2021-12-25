@@ -17,6 +17,7 @@ driverAddress = 'C:\Program Files\Google\Chrome\Application\chromedriver.exe'
 LOGIN_PAGE = 'https://stuinfosys.ntust.edu.tw/NTUSTSSOServ/SSO/Login/CourseSelection'
 INDEX_PAGE = 'https://courseselection.ntust.edu.tw/'
 MAIN_PAGE = 'https://courseselection.ntust.edu.tw/First/A06/A06'
+TIMEOUT = 30
 # Lesson Code
 lessonCode = [
     'LESSON_CODE_1_HERE',
@@ -63,7 +64,7 @@ def takeLesson():
         if currentPage == INDEX_PAGE:
             enterMainPage()
             break
-        if time.time()-30>now:
+        if time.time()-now>TIMEOUT:
             browser.reload()
             break
         alert = browser.get_alert()
@@ -90,15 +91,16 @@ while True:
             login()
         except:
             print("登入錯誤")         
-    if currentPage == INDEX_PAGE:
+    elif currentPage == INDEX_PAGE:
         try:
             enterMainPage()
         except:
             print("跳轉錯誤")
-    if currentPage == MAIN_PAGE:
+    elif currentPage == MAIN_PAGE:
         try:
             takeLesson()
         except:
             print("加選錯誤")
-    time.sleep(1)
+    else:
+        browser.visit(INDEX_PAGE)
 print("End")
