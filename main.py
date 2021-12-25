@@ -85,7 +85,12 @@ def takeLesson():
     
 init()
 while True:
-    currentPage = browser.url
+    try:
+        currentPage = browser.url
+    except:
+        print("browser error")
+        continue
+
     if currentPage == LOGIN_PAGE:
         try:
             login()
