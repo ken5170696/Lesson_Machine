@@ -11,7 +11,7 @@
   Username = "YOUR_STUDENT_NUMBER"
   Password = "YOUR_PASSWORD"  
   ### Path where chrome.exe is in
-  driverAddress = 'C:\Program Files\Google\Chrome\Application\chromedriver.exe'
+  driverAddress = 'PATH_WHERE_CHROME.EXE_IS_IN'
   ### Lesson Code you want to take
   lessonCode = [
     'LESSON_CODE_1_HERE',
