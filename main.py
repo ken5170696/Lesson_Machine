@@ -9,8 +9,8 @@ import logging
 
 # variable
 # Acount info
-Username = "YOUR_STUDENT_NUMBER"
-Password = "YOUR_PASSWORD"
+Username = "B11015044"
+Password = "Ken+20150223-ntust"
 # Website driver address
 driverAddress = 'C:\Program Files\Google\Chrome\Application\chromedriver.exe'
 # url
@@ -20,8 +20,9 @@ MAIN_PAGE = 'https://courseselection.ntust.edu.tw/First/A06/A06'
 TIMEOUT = 30
 # Lesson Code
 lessonCode = [
-    'LESSON_CODE_1_HERE',
-    'LESSON_CODE_2_HERE'
+    'FE1471702',
+    'FE1851701',
+    'FE1935701'
 ]
 listLength = len(lessonCode)
 listIndex = 0

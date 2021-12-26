@@ -1,4 +1,4 @@
-## 1. Download chrome driver from the URL below (with the version of your chrome), extract, and paste the exe file to the document where chrome.exe is in:
+## 1. Download chrome driver from the URL below (with the version of your Chrome), extract, and paste the exe file to the document where chrome.exe is in:
   https://chromedriver.chromium.org/
 
 ## 2. Install following python package:
