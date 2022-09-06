@@ -2,9 +2,7 @@
   https://chromedriver.chromium.org/
 
 ## 2. Install following python package:
-  $ pip install splinter
-  $ pip install selenium
-  $ pip install urllib3
+  $ pip install splinter && pip install selenium && pip install urllib3
 
 ## 3. Please modify these variable
   ### account info
