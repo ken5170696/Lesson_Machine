@@ -3,14 +3,15 @@ import threading
 import datetime
 
 from splinter import Browser
+from selenium.webdriver.chrome.service import Service
 import time
 
 import logging
 
 # variable
 # Acount info
-Username = "YOUR_STUDENT_NUMBER"
-Password = "YOUR_PASSWORD"  
+Username = ""
+Password = ""  
 # Website driver address
 driverAddress = 'C:\Program Files\Google\Chrome\Application\chromedriver.exe'
 # url
@@ -20,14 +21,16 @@ MAIN_PAGE = 'https://courseselection.ntust.edu.tw/First/A06/A06'
 TIMEOUT = 30
 # Lesson Code
 lessonCode = [
-    'LESSON_CODE_1_HERE',
-    'LESSON_CODE_2_HERE'
+    '',
+    '',
 ]
 listLength = len(lessonCode)
 listIndex = 0
 # using chrome drive
-executable_path = {'executable_path':driverAddress}
-browser = Browser('chrome', **executable_path)
+#executable_path = {'executable_path':driverAddress}
+#browser = Browser('chrome', **executable_path)
+my_service = Service(executable_path=driverAddress)
+browser = Browser('chrome')
 
 def init():
     logging.basicConfig(
@@ -75,8 +78,8 @@ def takeLesson():
     else:
         alert_text = "錯誤"
 
-    str = '\" %s \" Reply: %s' %(lessonCode[listIndex],alert_text)
-    print(str)
+    str = '\" %s \" Reply: %s' %(lessonCode[listIndex],alert_text.encode("utf-8"))
+    print(str.encode("utf-8"))
     logging.info(str)
 
     listIndex += 1
@@ -88,24 +91,24 @@ while True:
     try:
         currentPage = browser.url
     except:
-        print("browser error")
+        print("browser error".encode("utf-8"))
         continue
 
     if currentPage == LOGIN_PAGE:
         try:
             login()
         except:
-            print("登入錯誤")         
+            print("登入錯誤".encode("utf-8"))         
     elif currentPage == INDEX_PAGE:
         try:
             enterMainPage()
         except:
-            print("跳轉錯誤")
+            print("跳轉錯誤".encode("utf-8"))
     elif currentPage == MAIN_PAGE:
         try:
             takeLesson()
         except:
-            print("加選錯誤")
+            print("加選錯誤".encode("utf-8"))
     else:
         browser.visit(INDEX_PAGE)
 print("End")
