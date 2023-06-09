@@ -1,17 +1,38 @@
 import requests as rq
 import sys
 import time
+import json
+import os
+import logging
 
-# Your essential informations
-cookies = ""
-lessonCode = [
-    "FE1581701",
-    "CS3051701",
-]
+settingsFile = "request_method/settings.json"
+logPath = "request_method/log/"
+
+# variable init
+with open(settingsFile, 'r', newline='') as jsonfile:
+    data = json.load(jsonfile)
+    
+cookies = data["cookies"]
+lessonCode = data["lessonCode"]
 
 listLength = len(lessonCode)
 listIndex = 0
 
+# file init
+isExist = os.path.exists(logPath)
+if not isExist:
+   # Create a new directory because it does not exist
+   os.makedirs(logPath)
+   print("The log directory is created!")
+
+logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s %(message)s',
+        datefmt='%Y-%m-%d %H:%M',
+        handlers=[logging.FileHandler(logPath + 'output.log', 'w', 'utf-8'), ]
+    )
+
+# Start
 while listLength > 0 :
     
     # Update listIndex:
@@ -21,7 +42,11 @@ while listLength > 0 :
     if listIndex >= listLength:
         listIndex = 0
         print("")
-    print(listIndex + 1 , "/" , listLength , " : ")
+        logging.info("")
+    
+    outputStr = "{}/{}:".format((listIndex + 1), (listLength))
+    print(outputStr)
+    logging.info(outputStr)
     
     # Get Course informations
     courseInfoAPILink = 'https://querycourse.ntust.edu.tw/querycourse/api/courses'
@@ -29,12 +54,15 @@ while listLength > 0 :
 
     courseInfo = rq.post(courseInfoAPILink, json=courseInfoData)
     courseInfo.encoding = 'big-5'
-    # print(courseInfo.content)
-    print(courseInfo.json()[0]["CourseNo"], " : ", courseInfo.json()[0]["ChooseStudent"], "/", courseInfo.json()[0]["Restrict2"])
-
+    outputStr = str(courseInfo.json()[0]["CourseNo"]) + " : " + str(courseInfo.json()[0]["ChooseStudent"]) + "/" + str(courseInfo.json()[0]["Restrict2"])
+    print(outputStr)
+    logging.info(outputStr)
+    
     # Add Course
     if int(courseInfo.json()[0]["ChooseStudent"]) < int(courseInfo.json()[0]["Restrict2"]) : 
-        print("Course Added: {}".format(lessonCode[listIndex]))
+        outputStr = "Course Added: {}".format(lessonCode[listIndex])
+        print(outputStr)
+        logging.info(outputStr)
         
         courseAddLink = 'https://courseselection.ntust.edu.tw/First/A06/ExtraJoin'
         courseAddData = {"CourseNo":lessonCode[listIndex],"type":3}
